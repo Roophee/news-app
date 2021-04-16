@@ -5,7 +5,7 @@ The app will collect news from open news sources. The main advantage of this app
 ## Main Features:
 
 1. Displaying news headlines and previews of news with a picture.
-2. Search by stories.
+2. Search by keywords.
 3. Filtering news by countries, categories and agencies
 4. Personal account and authentication
 5. Ability to create bookmarks so as not to select a search criterion from the form every time.
