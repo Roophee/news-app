@@ -3,47 +3,88 @@ if (module.hot) {
 }
 
 import styles from './style.css';
-import news from './storage';
-const APIKey = '9d9d86bb24494ac49811063c8ddc0653';
-const reservApiKey = 'e1b7d424d3ee4d279d24fbd5c3b8c509';
-const startEndpoint =
-  'https://newsapi.org/v2/top-headlines?country=ua&pageSize=50&apiKey=e1b7d424d3ee4d279d24fbd5c3b8c509';
+const startEndpoint = 'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&&page_size=100&';
 const App = document.querySelector('.app-root');
 const queryProperties = {
-  category: '',
-  country: '',
   q: '',
-  pageSize: '',
+  topic: '',
+  lang: '',
+  country: '',
+  page_size: '',
+  from: '',
 };
 
-fetchingNews();
+const getItemFromLocalStore = key => {
+  return window.localStorage.getItem(`${key}`);
+};
 
-const addQueryParam = (param, value) => {
-  queryProperties[param] = value;
+const setItemToLocalStore = (key, value) => {
+  return window.localStorage.setItem(key, value);
+};
+
+const defaultSearch = input => {
+  console.log('input', input);
+  console.log('input-trim', input.trim());
+  return input.trim() === '' ? '*' : input.trim();
+};
+
+const setValueInLocalStorage = event => {
+  setItemToLocalStore(event.target.id, defaultSearch(event.target.value));
+  event.target.value
+    ? (event.target.querySelector(`option[value=${event.target.value}]`).selected = true)
+    : '';
+  console.log(event);
+};
+
+window.setValueInLocalStorage = setValueInLocalStorage;
+
+const setValueInLocalStorage2 = event => {
+  event.preventDefault();
+  window.setValueInLocalStorage(event);
 };
 
 const valuesFromKey = key => {
-  return !(queryProperties[key] == false || queryProperties[key] === 'default')
-    ? `${key}=${queryProperties[key]}&`
-    : '';
+  return !(
+    getItemFromLocalStore(`${key}`) == false || getItemFromLocalStore(`${key}`) === 'default'
+  )
+    ? `${key}=${getItemFromLocalStore(`${key}`)}&`
+    : ``;
 };
 
 const createQueryToApi = () => {
-  let url = `https://newsapi.org/v2/top-headlines?`;
-  Object.keys(queryProperties).map(key => (url += valuesFromKey(key)));
-  url += `apiKey=${reservApiKey}`;
+  let url = `https://free-news.p.rapidapi.com/v1/search?`;
+  Object.keys(queryProperties)
+    .filter(item => item !== 'from')
+    .map(key => (url += valuesFromKey(key)));
+  if (getItemFromLocalStore('from') !== '') {
+    console.log('---FROM', url)
+    return (url += `&from=${getItemFromLocalStore('from').replaceAll('-', '/')}`);
+  }
   return url;
 };
 
-function fetchingNews(url = startEndpoint) {
-  fetch(`${url}`)
+const fetchingNews = (url = startEndpoint) => {
+  console.log(url);
+  fetch(`${url}`, {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': `${process.env.API_KEY}`,
+      'x-rapidapi-host': 'free-news.p.rapidapi.com',
+    },
+  })
     .then(response => {
       return response.json();
     })
+    .catch(err => {
+    console.error(err);
+    })
     .then(data => {
+      console.log(data);
       renderApp(data.articles);
     });
-}
+};
+
+fetchingNews();
 
 const checkComponentOrProps = args => {
   if (typeof args === 'function') {
@@ -60,14 +101,11 @@ const returnPlaceHolderUrl = () => {
   return 'https://via.placeholder.com/450x250.png?text=NoImage';
 };
 
-const urlForNewsImage = url => {
+const getUrlForNewsImage = url => {
   return checkNullOrContent(url) == '' ? returnPlaceHolderUrl() : checkNullOrContent(url);
 };
 
 const checkValueFromFormItem = () => {
-  Object.keys(queryProperties).map(key => {
-    addQueryParam(key, document.querySelector(`#${key}`).value.trim());
-  });
   fetchingNews(createQueryToApi());
 };
 
@@ -80,7 +118,76 @@ const insertComponent = args => {
   return checkComponentOrProps(args) ? args() : args;
 };
 
+const concatTimeStamp = time => {
+  if (time) {
+    return time.replace(' ', 'T');
+  }
+};
+
+const sortNewsByTimeStamp = (a, b) => {
+  return (
+    Date.parse(concatTimeStamp(b.published_date)) - Date.parse(concatTimeStamp(a.published_date))
+  );
+};
+
+const filterNewsByRealTimeStamp = article => {
+  return Date.parse(concatTimeStamp(article.published_date)) <= Date.now();
+};
+
 window.someHamdler = checkValueFromFormItem;
+
+function resetFilters(event) {
+  console.log('============== RESET')
+  event.preventDefault();
+  Object.keys(queryProperties).forEach(item => {
+    console.log(item);
+    if (item !== 'q' && item !== 'page_size' && item !== 'from') {
+      console.log(window.localStorage);
+      setItemToLocalStore(item, 'default');
+    }
+    if (item === 'q') {
+      setItemToLocalStore(item, '*');
+    }
+    if (item === 'from') {
+      setItemToLocalStore(item, '');
+    }
+  });
+}
+
+window.resetFilters = resetFilters;
+window.setSelectedFilters = setSelectedFilters;
+
+const applyResetFilters = event => {
+  window.resetFilters(event);
+  window.setSelectedFilters();
+};
+
+function queryParamFromHandler(event) {
+  console.log(event.target)
+  setItemToLocalStore(event.target.id, event.target.value);
+};
+
+window.queryParamFromHandler = queryParamFromHandler;
+
+const applyQueryParamFromHandler = event => {
+  event.preventDefault();
+  window.queryParamFromHandler(event);
+};
+
+function pageSizeHandler(event) {
+  setItemToLocalStore(event.target.id, event.target.value);
+}
+
+window.pageSizeHandler = pageSizeHandler;
+
+const applyPageSizeHandler = event => {
+  event.preventDefault();
+  window.pageSizeHandler(event);
+};
+
+const normalizeNews = news => {
+  return news.sort(sortNewsByTimeStamp).filter(filterNewsByRealTimeStamp);
+};
 
 function Header(args) {
   return `
@@ -94,29 +201,68 @@ function Header(args) {
       </div>
     </div>
     <form>
-    <label>Keyword <input type="text" name="search" value="" id="q"/></label>
-    <label>Category <select name="category" id="category" default="-----------">
-    <option value="default">-----------</option>
+    <div class="">
+    <label>Keyword <input type="text" name="search" value="*" id="q" onChange="(${setValueInLocalStorage2})(event)"/></label>
+    </div>
+    <div class="">
+    <label>Category <select name="topic" id="topic" default="Any" onChange="(${setValueInLocalStorage2})(event)">
+    <option value="default">Any</option>
     <option value="business">Business</option>
+    <option value="beauty">Beauty</option>
     <option value="entertainment">Entertainment</option>
-    <option value="general">General</option>
-    <option value="health">Health</option>
+    <option value="economics">Economics</option>
+    <option value="finance">Finance</option>
+    <option value="food">Food</option>
+    <option value="news">General</option>
+    <option value="music">Music</option>
+    <option value="politics">Politics</option>
     <option value="science">Science</option>
-    <option value="sports">Sports</option>
-    <option value="technology">Technology</option>
+    <option value="sport">Sport</option>
+    <option value="tech">Technology</option>
+    <option value="travel">Travel</option>
+    <option value="world">World</option>
     </select></label>
-    <label>Country <select name="country" id="country" default="-----------">
-    <option value="default">-----------</option>
+    </div>
+    <div class="">
+    <label>Language <select name="lang" id="lang" default="Any" onChange="(${setValueInLocalStorage2})(event)">
+    <option value="default">Any</option>
+    <option value="uk">Ukrainian </option>
+    <option value="de">German</option>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+    <option value="it">Italian </option>
+    <option value="lt">Lithuanian </option>
+    <option value="pt">Portuguese</option>
+    <option value="es">Espanian</option>
+    <option value="cn">Chinese</option>
+    </select></label>
+    </div>
+    <div class="">
+    <label>Country <select name="country" id="country" onChange="(${setValueInLocalStorage2})(event)">
+    <option value="default">Any</option>
     <option value="ua">Ukraine</option>
     <option value="us">USA</option>
     <option value="ru">Russia</option>
+    <option value="de">Germany</option>
     <option value="gb">Great Britain</option>
     <option value="it">Italy</option>
     <option value="lt">Lithuania</option>
+    <option value="pt">Portugal</option>
+    <option value="sp">Spain</option>
     <option value="ch">China</option>
     </select></label>
-    <label>Pages <input type="range" min="20" max="100" value="30" name="pageSize" id="pageSize"></label>
-    <input type="submit" value="Search" onClick="(${onSubmitHandler})(event)"/>
+    </div>
+    <div class="">
+    <label>Page size <input style="width: 7vw" type="range" min="25" max="100" value="50" name="page_size" id="page_size"
+    onChange="(${applyPageSizeHandler})(event)"></label>
+    </div>
+    <div class="">
+    <label>From date <input type="date" name="from" id="from" value="" onChange="(${applyQueryParamFromHandler})(event)"></label>
+    </div>
+    <div class="">
+    <input style="background-color: #C8E6C9;" type="submit" value="Search" onClick="(${onSubmitHandler})(event)"/>
+    <button style="background-color: #ffcdd2;" onClick="(${applyResetFilters})(event)">Reset</button>
+    </div>
     </form>
     </header>
   `;
@@ -136,25 +282,57 @@ function Account() {
 function Main(news) {
   return `
   <main class="${styles.main}">
-  ${news
-    .map(item => {
-      return `
-    <div class=" ${styles.flex__start}">
-      <img class="${styles.news__picture}" src="${urlForNewsImage(item.urlToImage)}">
-      <div>
-        <h2><a href="${item.url}" target="_blank">${item.title}</a></h2>
-        <div>${new Date(checkNullOrContent(item.publishedAt)).toLocaleDateString()}</div>
-        <div class="${styles.flex__space_between}">
-          <div>Автор: <strong>${checkNullOrContent(item.author)}</strong></div>
-          <div><strong>${checkNullOrContent(item.source.name)}</strong></div>
-        </div><br/>
-          <div>${checkNullOrContent(item.description)}</div>
-      </div>
-    </div>
-    `;
-    })
-    .join('')}
+  ${
+    news === undefined
+      ? `<h3>No matches for your search</h3>`
+      : normalizeNews(news).length > 0
+      ? normalizeNews(news)
+          .sort(sortNewsByTimeStamp)
+          .filter(filterNewsByRealTimeStamp)
+          .map(item => {
+            return `
+              <div class=" ${styles.flex__start}">
+                <img class="${styles.news__picture}" src="${getUrlForNewsImage(item.media)}">
+                <div>
+                  <h2><a href="${item.link}" target="_blank">${item.title}</a></h2>
+                  <div>${new Date(checkNullOrContent(item.published_date)).toLocaleDateString()} 
+                       ${new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
+                   </div>
+                  <div class="${styles.flex__space_between}">
+                    <div>Автор: <strong>${checkNullOrContent(item.author)}</strong></div>
+                    <div><strong>${checkNullOrContent(item.clean_url)}</strong></div>
+                  </div><br/>
+                    <div>${checkNullOrContent(item.summary)}</div>
+                </div>
+              </div>
+              `;
+          })
+          .join('')
+      : `<h3>No matches for your search</h3>`
+  }
 </main>`;
+}
+
+function setSelectedFilters() {
+  console.log('!!!!!!!!!!!!!!!!!! SET');
+  Object.keys(queryProperties).forEach(item => {
+    if (item !== 'q' && item !== 'page_size' && item !== 'from') {
+      console.log('item', item);
+      document
+        .querySelector(`#${item}`)
+        .querySelector(`option[value=${getItemFromLocalStore(item)}]`).selected = true;
+    }
+    if (item === 'q') {
+      if (getItemFromLocalStore(item) !== '') {
+        document.querySelector(`#${item}`).value = `${getItemFromLocalStore(item)}`;
+      } else {
+        document.querySelector(`#${item}`).value = `*`;
+      }
+    }
+    if (item === 'from' || 'page_size') {
+      document.querySelector(`#${item}`).value = getItemFromLocalStore(`${item}`);
+    }
+  });
 }
 
 function renderApp(apiData) {
@@ -162,4 +340,5 @@ function renderApp(apiData) {
     ${Header([Account])}
     ${Main(apiData)}
 `;
+  setSelectedFilters();
 }

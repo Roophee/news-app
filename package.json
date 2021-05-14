@@ -12,7 +12,7 @@
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
     "build": "parcel build ./index.html --public-url ./",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -b master -d dist"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
     "url": "https://github.com/kottans/framework-2021/issues"
   },
   "homepage": "https://github.com/kottans/framework-2021#readme",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/eslint-parser": "^7.13.14",

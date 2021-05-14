@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  background-color: #EEE;
 }
 
 .header {
@@ -53,6 +54,7 @@ body {
 .news__picture {
   width: 30%;
   margin-right: 10px;
+  border: 1px solid #000;
 }
 
 .width_100 {
@@ -67,4 +69,17 @@ body {
 
 .border_bottom {
   border-bottom: 1px solid #000;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  max-width: 80vw;
+}
+
+form * {
+  margin-right: 5px;
+  margin-bottom: 5px;
 }
