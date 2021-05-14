@@ -23,8 +23,6 @@ const setItemToLocalStore = (key, value) => {
 };
 
 const defaultSearch = input => {
-  console.log('input', input);
-  console.log('input-trim', input.trim());
   return input.trim() === '' ? '*' : input.trim();
 };
 
@@ -33,7 +31,6 @@ const setValueInLocalStorage = event => {
   event.target.value
     ? (event.target.querySelector(`option[value=${event.target.value}]`).selected = true)
     : '';
-  console.log(event);
 };
 
 window.setValueInLocalStorage = setValueInLocalStorage;
@@ -57,14 +54,12 @@ const createQueryToApi = () => {
     .filter(item => item !== 'from')
     .map(key => (url += valuesFromKey(key)));
   if (getItemFromLocalStore('from') !== '') {
-    console.log('---FROM', url)
     return (url += `&from=${getItemFromLocalStore('from').replaceAll('-', '/')}`);
   }
   return url;
 };
 
 const fetchingNews = (url = startEndpoint) => {
-  console.log(url);
   fetch(`${url}`, {
     method: 'GET',
     headers: {
@@ -76,10 +71,9 @@ const fetchingNews = (url = startEndpoint) => {
       return response.json();
     })
     .catch(err => {
-    console.error(err);
+      console.log('error', err);
     })
     .then(data => {
-      console.log(data);
       renderApp(data.articles);
     });
 };
@@ -137,12 +131,9 @@ const filterNewsByRealTimeStamp = article => {
 window.someHamdler = checkValueFromFormItem;
 
 function resetFilters(event) {
-  console.log('============== RESET')
   event.preventDefault();
   Object.keys(queryProperties).forEach(item => {
-    console.log(item);
     if (item !== 'q' && item !== 'page_size' && item !== 'from') {
-      console.log(window.localStorage);
       setItemToLocalStore(item, 'default');
     }
     if (item === 'q') {
@@ -163,7 +154,6 @@ const applyResetFilters = event => {
 };
 
 function queryParamFromHandler(event) {
-  console.log(event.target)
   setItemToLocalStore(event.target.id, event.target.value);
 };
 
@@ -314,10 +304,8 @@ function Main(news) {
 }
 
 function setSelectedFilters() {
-  console.log('!!!!!!!!!!!!!!!!!! SET');
   Object.keys(queryProperties).forEach(item => {
     if (item !== 'q' && item !== 'page_size' && item !== 'from') {
-      console.log('item', item);
       document
         .querySelector(`#${item}`)
         .querySelector(`option[value=${getItemFromLocalStore(item)}]`).selected = true;
