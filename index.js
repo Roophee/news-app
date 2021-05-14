@@ -6,21 +6,25 @@ import styles from './style.css';
 const startEndpoint = 'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&&page_size=100&';
 const App = document.querySelector('.app-root');
 const queryProperties = {
-  q: '',
-  topic: '',
-  lang: '',
-  country: '',
-  page_size: '',
+  q: '*',
+  topic: 'default',
+  lang: 'default',
+  country: 'default',
+  page_size: '75',
   from: '',
 };
 
-const getItemFromLocalStore = key => {
+function getItemFromLocalStore(key) {
   return window.localStorage.getItem(`${key}`);
 };
 
-const setItemToLocalStore = (key, value) => {
+function setItemToLocalStore(key, value) {
   return window.localStorage.setItem(key, value);
 };
+
+Object.keys(queryProperties).forEach(item => {
+  setItemToLocalStore(item, queryProperties[item]);
+});
 
 const defaultSearch = input => {
   return input.trim() === '' ? '*' : input.trim();
@@ -71,7 +75,7 @@ const fetchingNews = (url = startEndpoint) => {
       return response.json();
     })
     .catch(err => {
-      console.log('error', err);
+      // console.log('error', err);
     })
     .then(data => {
       renderApp(data.articles);
@@ -96,7 +100,11 @@ const returnPlaceHolderUrl = () => {
 };
 
 const getUrlForNewsImage = url => {
-  return checkNullOrContent(url) == '' ? returnPlaceHolderUrl() : checkNullOrContent(url);
+  return checkNullOrContent(url).includes('https')
+    ? checkNullOrContent(url)
+    : checkNullOrContent(url).includes('http')
+    ? checkNullOrContent(url).replace('http', 'https')
+    : returnPlaceHolderUrl();
 };
 
 const checkValueFromFormItem = () => {
@@ -155,7 +163,7 @@ const applyResetFilters = event => {
 
 function queryParamFromHandler(event) {
   setItemToLocalStore(event.target.id, event.target.value);
-};
+}
 
 window.queryParamFromHandler = queryParamFromHandler;
 
@@ -195,7 +203,7 @@ function Header(args) {
     <label>Keyword <input type="text" name="search" value="*" id="q" onChange="(${setValueInLocalStorage2})(event)"/></label>
     </div>
     <div class="">
-    <label>Category <select name="topic" id="topic" default="Any" onChange="(${setValueInLocalStorage2})(event)">
+    <label>Category <select name="topic" id="topic" default="default" onChange="(${setValueInLocalStorage2})(event)">
     <option value="default">Any</option>
     <option value="business">Business</option>
     <option value="beauty">Beauty</option>
@@ -214,7 +222,7 @@ function Header(args) {
     </select></label>
     </div>
     <div class="">
-    <label>Language <select name="lang" id="lang" default="Any" onChange="(${setValueInLocalStorage2})(event)">
+    <label>Language <select name="lang" id="lang" default="default" onChange="(${setValueInLocalStorage2})(event)">
     <option value="default">Any</option>
     <option value="uk">Ukrainian </option>
     <option value="de">German</option>
@@ -228,7 +236,7 @@ function Header(args) {
     </select></label>
     </div>
     <div class="">
-    <label>Country <select name="country" id="country" onChange="(${setValueInLocalStorage2})(event)">
+    <label>Country <select name="country" default="default" id="country" onChange="(${setValueInLocalStorage2})(event)">
     <option value="default">Any</option>
     <option value="ua">Ukraine</option>
     <option value="us">USA</option>
@@ -277,8 +285,6 @@ function Main(news) {
       ? `<h3>No matches for your search</h3>`
       : normalizeNews(news).length > 0
       ? normalizeNews(news)
-          .sort(sortNewsByTimeStamp)
-          .filter(filterNewsByRealTimeStamp)
           .map(item => {
             return `
               <div class=" ${styles.flex__start}">
