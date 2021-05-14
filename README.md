@@ -1,41 +1,13 @@
-# Framework
+# News App
 
-A gradual FE JS framework development.
+The app will collect news from open news sources. The main advantage of this application is the ability to read news from different agencies and from different countries in one place. This will allow you to see how the same events are covered in different countries. For collecting, sorting and filtering news will be used [NewsAPI](https://newsapi.org/), for collecting financial quotes will be used [Yahoo! Finance](https://finance.yahoo.com/)
 
-## End game
+## Main Features:
 
-Have a web app as a practical implementation
-of an application backed with a basic FE framework.
-
-Framework features:
-
-- components with props
-- html-like syntax
-- app state management
-- event handling
-- async network requests
-
-Out of scope:
-
-- reconciliation
-- app state persistency between sessions
-- everything else :)
-
-## Development
-
-`npm install` to install dependencies.
-Ignore npm audit warnings.
-If any changes appear on `package-lock.json` just commit those.
-
-`npm start` to launch dev server, app would be served at http://localhost:1234/
-
-`npm run lint` to lint and prettify your code
-
-The project implements a pre-commit hook that launches staged files linting.
-If your IDE reports a commit failure then run `npm run lint` and/or `npm run lint:staged`
-and fix reported issues. Note that [`.eslintrc.js`](./.eslintrc.js) allows
-`console.error` and `console.warn`.
-
-`npm run build` to build production distribution package
-
-`npm run deploy` to publish built app
+1. Displaying news headlines and previews of news with a picture.
+2. Search by keywords.
+3. Filtering news by countries, categories and agencies
+4. Personal account and authentication
+5. Ability to create bookmarks so as not to select a search criterion from the form every time.
+6. Binding the user's environment with his bookmarks to a personal account. When the user enters the application, he will be shown his environment with bookmarks.
+7. Widget with economic news - quotes of major indices and rates. Ability to customize the number and list of quotes.
