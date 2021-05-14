@@ -16,11 +16,11 @@ const queryProperties = {
 
 function getItemFromLocalStore(key) {
   return window.localStorage.getItem(`${key}`);
-};
+}
 
 function setItemToLocalStore(key, value) {
   return window.localStorage.setItem(key, value);
-};
+}
 
 Object.keys(queryProperties).forEach(item => {
   setItemToLocalStore(item, queryProperties[item]);
@@ -71,11 +71,15 @@ const fetchingNews = (url = startEndpoint) => {
       'x-rapidapi-host': 'free-news.p.rapidapi.com',
     },
   })
-    .then(response => {
-      return response.json();
+    .then(res => {
+      if (res.status != 200) {
+        throw new Error('Network response was not OK');
+      } else {
+        return res.json();
+      }
     })
-    .catch(err => {
-      // console.log('error', err);
+    .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
     })
     .then(data => {
       renderApp(data.articles);
