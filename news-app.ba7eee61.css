@@ -1,2 +1,74 @@
-body{padding:0;margin:0;background-color:#eee}._header_a2b22{padding:0 0 5px;display:flex;flex-direction:column;align-items:center}._header_a2b22 form{margin:0;padding:0}._header__avatar_a2b22{width:40px;height:40px;margin:0 10px 0 0}._flex__center_a2b22{display:flex;align-items:center;justify-content:center;margin-bottom:20px}._flex__start_a2b22{display:flex;align-items:start;justify-content:start;margin-bottom:20px}._flex__start_a2b22 a{text-decoration:none;color:#000}._flex__space_between_a2b22{display:flex;align-items:center;justify-content:space-between}._main_a2b22{width:80%;height:100%;margin:10px auto}._news__picture_a2b22{width:30%;margin-right:10px;border:1px solid #000}._width_100_a2b22{width:100%;padiing:0 50px 10px;margin-bottom:10px}._width_80_a2b22{width:80%}._border_bottom_a2b22{border-bottom:1px solid #000}form{display:flex;justify-content:center;align-items:baseline;flex-wrap:wrap;max-width:80vw}form *{margin-right:5px;margin-bottom:5px}
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+}
+._header_a2b22 {
+  padding: 0 0 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+._header_a2b22 form {
+  margin: 0;
+  padding: 0;
+}
+._header__avatar_a2b22 {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px 0 0;
+}
+._flex__center_a2b22 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+._flex__start_a2b22 {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  margin-bottom: 20px;
+}
+._flex__start_a2b22 a {
+  text-decoration: none;
+  color: #000;
+}
+._flex__space_between_a2b22 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+._main_a2b22 {
+  width: 80%;
+  height: 100%;
+  margin: 10px auto;
+}
+._news__picture_a2b22 {
+  width: 30%;
+  margin-right: 10px;
+  border: 1px solid #000;
+}
+._width_100_a2b22 {
+  width: 100%;
+  padiing: 0 50px 10px;
+  margin-bottom: 10px;
+}
+._width_80_a2b22 {
+  width: 80%;
+}
+._border_bottom_a2b22 {
+  border-bottom: 1px solid #000;
+}
+form {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  max-width: 80vw;
+}
+form * {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
 /*# sourceMappingURL=news-app.ba7eee61.css.map */

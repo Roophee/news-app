@@ -3,8 +3,11 @@ if (module.hot) {
 }
 
 import styles from './style.css';
-const startEndpoint = 'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&country=ua&page_size=100&';
+import API_KEY from '.env';
+const startEndpoint =
+  'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&country=ua&page_size=100&';
 const App = document.querySelector('.app-root');
+const MainTag = document.querySelector('main');
 const queryProperties = {
   q: '*',
   topic: 'default',
@@ -16,15 +19,11 @@ const queryProperties = {
 
 function getItemFromLocalStore(key) {
   return window.localStorage.getItem(`${key}`);
-};
+}
 
 function setItemToLocalStore(key, value) {
   return window.localStorage.setItem(key, value);
-};
-
-Object.keys(queryProperties).forEach(item => {
-  setItemToLocalStore(item, queryProperties[item]);
-});
+}
 
 const defaultSearch = input => {
   return input.trim() === '' ? '*' : input.trim();
@@ -32,14 +31,11 @@ const defaultSearch = input => {
 
 const setValueInLocalStorage = event => {
   setItemToLocalStore(event.target.id, defaultSearch(event.target.value));
-  event.target.value
-    ? (event.target.querySelector(`option[value=${event.target.value}]`).selected = true)
-    : '';
 };
 
 window.setValueInLocalStorage = setValueInLocalStorage;
 
-const setValueInLocalStorage2 = event => {
+const applySetValueInLocalStorage = event => {
   event.preventDefault();
   window.setValueInLocalStorage(event);
 };
@@ -64,7 +60,7 @@ const createQueryToApi = () => {
 };
 
 const fetchingNews = (url = startEndpoint) => {
-  fetch(`${url}`, {
+  return fetch(`${url}`, {
     method: 'GET',
     headers: {
       'x-rapidapi-key': `${process.env.API_KEY}`,
@@ -78,17 +74,9 @@ const fetchingNews = (url = startEndpoint) => {
       // console.log('error', err);
     })
     .then(data => {
-      renderApp(data.articles);
+      window.news = data.articles;
+      return window.news;
     });
-};
-
-fetchingNews();
-
-const checkComponentOrProps = args => {
-  if (typeof args === 'function') {
-    return true;
-  }
-  return false;
 };
 
 const checkNullOrContent = arg => {
@@ -108,16 +96,12 @@ const getUrlForNewsImage = url => {
 };
 
 const checkValueFromFormItem = () => {
-  fetchingNews(createQueryToApi());
+  fetchingNews(createQueryToApi()).then(news => renderMain(news));
 };
 
 const onSubmitHandler = event => {
   event.preventDefault();
   window.someHamdler();
-};
-
-const insertComponent = args => {
-  return checkComponentOrProps(args) ? args() : args;
 };
 
 const concatTimeStamp = time => {
@@ -154,11 +138,12 @@ function resetFilters(event) {
 }
 
 window.resetFilters = resetFilters;
-window.setSelectedFilters = setSelectedFilters;
+window.fetchingNews = fetchingNews;
+window.renderApp = renderApp;
 
 const applyResetFilters = event => {
   window.resetFilters(event);
-  window.setSelectedFilters();
+  window.fetchingNews().then(news => renderApp(news));
 };
 
 function queryParamFromHandler(event) {
@@ -187,7 +172,14 @@ const normalizeNews = news => {
   return news.sort(sortNewsByTimeStamp).filter(filterNewsByRealTimeStamp);
 };
 
-function Header(args) {
+const getQueryParam = name => {
+  if (getItemFromLocalStore(name) !== '*') {
+    return `${getItemFromLocalStore(name)}`;
+  }
+  return '';
+};
+
+function Header() {
   return `
     <header class="
     ${styles.header}
@@ -195,15 +187,17 @@ function Header(args) {
     <div class="${styles.flex__center} ${styles.width_100} ${styles.border_bottom}">
       <div class="${styles.flex__space_between} ${styles.width_80}">
         <img style=" height: 50px;" src="https://archive.org/download/news-logo/news-logo.png" alt="logo"/>
-        ${args.length > 0 ? args.map(arg => insertComponent(arg)).join('') : ''}
+        ${Account()}
       </div>
     </div>
     <form>
-    <div class="">
-    <label>Keyword <input type="text" name="search" value="*" id="q" onChange="(${setValueInLocalStorage2})(event)"/></label>
+    <div>
+    <label>Keyword <input type="text" name="search" value="${getQueryParam(
+      'q',
+    )}" id="q" onChange="(${applySetValueInLocalStorage})(event)"/></label>
     </div>
-    <div class="">
-    <label>Category <select name="topic" id="topic" default="default" onChange="(${setValueInLocalStorage2})(event)">
+    <div>
+    <label>Category <select name="topic" id="topic"  onChange="(${applySetValueInLocalStorage})(event)">
     <option value="default">Any</option>
     <option value="business">Business</option>
     <option value="beauty">Beauty</option>
@@ -221,8 +215,8 @@ function Header(args) {
     <option value="world">World</option>
     </select></label>
     </div>
-    <div class="">
-    <label>Language <select name="lang" id="lang" default="default" onChange="(${setValueInLocalStorage2})(event)">
+    <div>
+    <label>Language <select name="lang" id="lang"  onChange="(${applySetValueInLocalStorage})(event)">
     <option value="default">Any</option>
     <option value="uk">Ukrainian </option>
     <option value="de">German</option>
@@ -235,8 +229,8 @@ function Header(args) {
     <option value="cn">Chinese</option>
     </select></label>
     </div>
-    <div class="">
-    <label>Country <select name="country" default="default" id="country" onChange="(${setValueInLocalStorage2})(event)">
+    <div>
+    <label>Country <select name="country"  id="country" onChange="(${applySetValueInLocalStorage})(event)">
     <option value="default">Any</option>
     <option value="ua">Ukraine</option>
     <option value="us">USA</option>
@@ -250,14 +244,18 @@ function Header(args) {
     <option value="ch">China</option>
     </select></label>
     </div>
-    <div class="">
-    <label>Page size <input style="width: 7vw" type="range" min="25" max="100" value="50" name="page_size" id="page_size"
+    <div>
+    <label>Page size <input style="width: 7vw" type="range" min="25" max="100" value="${getItemFromLocalStore(
+      'page_size',
+    )}" name="page_size" id="page_size"
     onChange="(${applyPageSizeHandler})(event)"></label>
+    </div> 
+    <div>
+    <label>From date <input type="date" name="from" id="from" value="${getItemFromLocalStore(
+      'from',
+    )}" onChange="(${applyQueryParamFromHandler})(event)"></label>
     </div>
-    <div class="">
-    <label>From date <input type="date" name="from" id="from" value="" onChange="(${applyQueryParamFromHandler})(event)"></label>
-    </div>
-    <div class="">
+    <div>
     <input style="background-color: #C8E6C9;" type="submit" value="Search" onClick="(${onSubmitHandler})(event)"/>
     <button style="background-color: #ffcdd2;" onClick="(${applyResetFilters})(event)">Reset</button>
     </div>
@@ -280,59 +278,52 @@ function Account() {
 function Main(news) {
   return `
   <main class="${styles.main}">
+  ${NewsList(news)};
+  </main>`;
+}
+
+function NewsItem(item) {
+  return `
+          <div class=" ${styles.flex__start}">
+            <img class="${styles.news__picture}" src="${getUrlForNewsImage(item.media)}">
+            <div>
+              <h2><a href="${item.link}" target="_blank">${item.title}</a></h2>
+              <div>${new Date(checkNullOrContent(item.published_date)).toLocaleDateString()} 
+                   ${new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
+               </div>
+              <div class="${styles.flex__space_between}">
+                <div>Автор: <strong>${checkNullOrContent(item.author)}</strong></div>
+                <div><strong>${checkNullOrContent(item.clean_url)}</strong></div>
+              </div><br/>
+                <div>${checkNullOrContent(item.summary)}</div>
+            </div>
+          </div>
+          `;
+}
+
+function NewsList(news) {
+  return `
   ${
     news === undefined
       ? `<h3>No matches for your search</h3>`
       : normalizeNews(news).length > 0
       ? normalizeNews(news)
           .map(item => {
-            return `
-              <div class=" ${styles.flex__start}">
-                <img class="${styles.news__picture}" src="${getUrlForNewsImage(item.media)}">
-                <div>
-                  <h2><a href="${item.link}" target="_blank">${item.title}</a></h2>
-                  <div>${new Date(checkNullOrContent(item.published_date)).toLocaleDateString()} 
-                       ${new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
-                   </div>
-                  <div class="${styles.flex__space_between}">
-                    <div>Автор: <strong>${checkNullOrContent(item.author)}</strong></div>
-                    <div><strong>${checkNullOrContent(item.clean_url)}</strong></div>
-                  </div><br/>
-                    <div>${checkNullOrContent(item.summary)}</div>
-                </div>
-              </div>
-              `;
+            return NewsItem(item);
           })
           .join('')
       : `<h3>No matches for your search</h3>`
   }
-</main>`;
+  `;
 }
 
-function setSelectedFilters() {
-  Object.keys(queryProperties).forEach(item => {
-    if (item !== 'q' && item !== 'page_size' && item !== 'from') {
-      document
-        .querySelector(`#${item}`)
-        .querySelector(`option[value=${getItemFromLocalStore(item)}]`).selected = true;
-    }
-    if (item === 'q') {
-      if (getItemFromLocalStore(item) !== '') {
-        document.querySelector(`#${item}`).value = `${getItemFromLocalStore(item)}`;
-      } else {
-        document.querySelector(`#${item}`).value = `*`;
-      }
-    }
-    if (item === 'from' || 'page_size') {
-      document.querySelector(`#${item}`).value = getItemFromLocalStore(`${item}`);
-    }
-  });
+function renderMain(news) {
+  MainTag.innerHTML = NewsList(news);
 }
 
 function renderApp(apiData) {
   App.innerHTML = `
-    ${Header([Account])}
+    ${Header()}
     ${Main(apiData)}
 `;
-  setSelectedFilters();
 }
