@@ -29,6 +29,7 @@ const defaultSearch = input => {
 };
 
 const setValueInLocalStorage = event => {
+  // console.log(event.target.id, event.target.value);
   setItemToLocalStore(event.target.id, defaultSearch(event.target.value));
 };
 
@@ -53,7 +54,7 @@ const createQueryToApi = () => {
     .filter(item => item !== 'from')
     .map(key => (url += valuesFromKey(key)));
   if (getItemFromLocalStore('from') !== '') {
-    return (url += `&from=${getItemFromLocalStore('from').replaceAll('-', '/')}`);
+    return (url += `from=${getItemFromLocalStore('from').replaceAll('-', '/')}`);
   }
   return url;
 };
@@ -79,6 +80,7 @@ const fetchingNews = (url = startEndpoint) => {
 };
 
 fetchingNews().then(news => renderApp(news));
+// .catch(err => console.log('1', err));
 
 const checkNullOrContent = arg => {
   return arg === null ? '' : arg;
@@ -98,6 +100,7 @@ const getUrlForNewsImage = url => {
 
 const checkValueFromFormItem = () => {
   fetchingNews(createQueryToApi()).then(news => renderMain(news));
+  // .catch(err => console.log('2', err));
 };
 
 const onSubmitHandler = event => {
@@ -125,14 +128,19 @@ window.someHamdler = checkValueFromFormItem;
 
 function resetFilters(event) {
   event.preventDefault();
+  // console.log('=======');
   Object.keys(queryProperties).forEach(item => {
+    // console.log('00');
     if (item !== 'q' && item !== 'page_size' && item !== 'from') {
+      // console.log('11');
       setItemToLocalStore(item, 'default');
     }
     if (item === 'q') {
+      // console.log('22');
       setItemToLocalStore(item, '*');
     }
     if (item === 'from') {
+      // console.log('33');
       setItemToLocalStore(item, '');
     }
   });
@@ -144,7 +152,15 @@ window.renderApp = renderApp;
 
 const applyResetFilters = event => {
   window.resetFilters(event);
-  window.fetchingNews().then(news => renderApp(news));
+  window
+    .fetchingNews()
+    .then(news => {
+      // console.log(news);
+      renderApp(news);
+    })
+    .catch(err => {
+      // console.log('3', err);
+    });
 };
 
 function queryParamFromHandler(event) {
