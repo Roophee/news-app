@@ -7,7 +7,6 @@ import API_KEY from '.env';
 const startEndpoint =
   'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&country=ua&page_size=100&';
 const App = document.querySelector('.app-root');
-const MainTag = document.querySelector('main');
 const queryProperties = {
   q: '*',
   topic: 'default',
@@ -78,6 +77,8 @@ const fetchingNews = (url = startEndpoint) => {
       return window.news;
     });
 };
+
+fetchingNews().then(news => renderApp(news));
 
 const checkNullOrContent = arg => {
   return arg === null ? '' : arg;
@@ -318,7 +319,7 @@ function NewsList(news) {
 }
 
 function renderMain(news) {
-  MainTag.innerHTML = NewsList(news);
+  document.querySelector('main').innerHTML = `${NewsList(news)}`;
 }
 
 function renderApp(apiData) {
