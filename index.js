@@ -152,15 +152,9 @@ window.renderApp = renderApp;
 
 const applyResetFilters = event => {
   window.resetFilters(event);
-  window
-    .fetchingNews()
-    .then(news => {
-      // console.log(news);
-      renderApp(news);
-    })
-    .catch(err => {
-      // console.log('3', err);
-    });
+  window.fetchingNews().then(news => {
+    window.renderApp(news);
+  });
 };
 
 function queryParamFromHandler(event) {
@@ -274,7 +268,7 @@ function Header() {
     </div>
     <div>
     <input style="background-color: #C8E6C9;" type="submit" value="Search" onClick="(${onSubmitHandler})(event)"/>
-    <button style="background-color: #ffcdd2;" onClick="(${applyResetFilters})(event)">Reset</button>
+    <button type="button" style="background-color: #ffcdd2;" onClick="(${applyResetFilters})(event)">Reset</button>
     </div>
     </form>
     </header>
