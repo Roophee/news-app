@@ -10,7 +10,7 @@ body {
   width: 100%;
   padiing: 0 50px 10px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #9e9e9e;
 }
 .header_logo_space {
   display: flex;
@@ -69,7 +69,7 @@ body {
 .news__picture {
   width: 30%;
   margin-right: 10px;
-  border: 1px solid #000;
+  border: 1px solid #9e9e9e;
 }
 
 .width_100 {
