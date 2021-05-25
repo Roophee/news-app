@@ -1,7 +1,4 @@
-// /** @jsx createElement */
-// /** @jsxFrag createFragment */
-// import { createElement, createFragment } from '../framework/element';
-import { getItemFromLocalStore, valuesFromKey } from './dataHandlers';
+import { getItemFromLocalStore, valuesFromKey, queryProperties } from './dataHandlers';
 
 const startEndpoint =
   'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&country=ua&page_size=100&';

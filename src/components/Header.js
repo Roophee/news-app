@@ -8,14 +8,15 @@ import {
   getItemFromLocalStore,
   getQueryParam,
   queryProperties,
-} from '../data/dataHandlers';
-import { fetchingNews } from '../data/APIHandlers';
+} from '../data/dataHandlers.js';
+import { fetchingNews, createQueryToApi } from '../data/APIHandlers';
 import { App } from './App';
 import { render } from '../framework/render';
 import Account from './Account';
+import { Main } from './Main';
 
 // console.log(queryProperties);
-queryProperties.entries().map(item => setItemToLocalStore(item[0], item[1]));
+Object.entries(queryProperties).map(item => setItemToLocalStore(item[0], item[1]));
 
 export function Header() {
   function queryParamFromHandler(event) {
@@ -30,7 +31,7 @@ export function Header() {
   };
 
   const checkValueFromFormItem = () => {
-    fetchingNews(createQueryToApi()).then(news => renderMain(news));
+    fetchingNews(createQueryToApi()).then(news => render(Main, 'main'));
     // .catch(err => console.log('2', err));
   };
 
@@ -92,15 +93,15 @@ export function Header() {
   const applyResetFilters = event => {
     window.resetFilters(event);
     window.fetchingNews().then(news => {
-      window.render('app-root', App);
+      render(App, 'app-root');
     });
   };
 
   return (
     <>
       <div className={styles.header}>
-        <div className={styles.flex__center + '' + styles.width_100 + '' + styles.border_bottom}>
-          <div className={styles.flex__space_between + '' + styles.width_80}>
+        <div className={styles.header_logo}>
+          <div className={styles.header_logo_space}>
             <img
               style=" height: 50px;"
               src="https://archive.org/download/news-logo/news-logo.png"

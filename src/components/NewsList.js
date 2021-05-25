@@ -1,7 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
-import { normalizeNews } from '../data/dataHandlers';
+import { normalizeNews } from '../data/dataHandlers.js';
 import { NewsItem } from './NewsItem';
 
 export function NewsList(news) {

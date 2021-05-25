@@ -8,7 +8,7 @@ export function Main() {
   let news = window.news;
   return (
     <>
-      <div class={styles.main}>${NewsList(news)};</div>;
+      <div className={styles.main}>{NewsList(news)};</div>;
     </>
   );
 }
