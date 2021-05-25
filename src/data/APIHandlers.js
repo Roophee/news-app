@@ -1,6 +1,6 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+// /** @jsx createElement */
+// /** @jsxFrag createFragment */
+// import { createElement, createFragment } from '../framework/element';
 import { getItemFromLocalStore, valuesFromKey } from './dataHandlers';
 
 const startEndpoint =

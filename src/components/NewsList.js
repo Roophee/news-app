@@ -5,17 +5,13 @@ import { normalizeNews } from '../data/dataHandlers';
 import { NewsItem } from './NewsItem';
 
 export function NewsList(news) {
-  return `
-  ${
-    news === undefined
-      ? `<h3>No matches for your search</h3>`
-      : normalizeNews(news).length > 0
-      ? normalizeNews(news)
-          .map(item => {
-            return NewsItem(item);
-          })
-          .join('')
-      : `<h3>No matches for your search</h3>`
-  }
-  `;
+  return (
+    <>
+      {news === undefined
+        ? '<h3>No matches for your search</h3>'
+        : normalizeNews(news).length > 0
+        ? normalizeNews(news).map(item => <NewsItem item={item} />)
+        : '<h3>No matches for your search</h3>'}
+    </>
+  );
 }
