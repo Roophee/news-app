@@ -21,7 +21,10 @@ export function NewsItem({ item }) {
               {new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
               <strong>{checkNullOrContent(item.clean_url)}</strong>
             </div>
-            <div>{checkNullOrContent(item.summary)}</div>
+            <div>
+              {checkNullOrContent(item.summary)}
+              {'...'}
+            </div>
           </div>
         </div>
       </div>
