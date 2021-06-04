@@ -1,11 +1,27 @@
-let Component, Target;
+/** @jsx createElement */
+/*** @jsxFrag createFragment */
+import { createElement } from './element';
+import { current } from './hooks';
 
-export const render = (componentFunction, targetElementID) => {
-  if (componentFunction) Component = componentFunction;
-  if (targetElementID) Target = targetElementID;
-  // console.log('Target', Target);
-  // console.log('Component', Component);
-  // console.log(document.getElementById(Target));
-  document.getElementById(Target).innerHTML = '';
-  document.getElementById(Target).appendChild(Component());
-};
+/**
+ * Renders a component and attaches it to the target DOM element
+ * @param Component - function
+ * @param target - DOM element to attach component to
+ */
+
+let timer;
+
+export function render(Component, target) {
+  function workLoop() {
+    if (current.shouldReRender) {
+      current.shouldReRender = false;
+      target.replaceChildren(<Component />);
+    }
+
+    cancelAnimationFrame(timer);
+    timer = requestAnimationFrame(workLoop);
+  }
+  timer = requestAnimationFrame(workLoop);
+}
+
+export default render;

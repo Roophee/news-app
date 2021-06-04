@@ -3,28 +3,29 @@
 import { createElement, createFragment } from '../framework/element';
 import { Header } from './Header';
 import { Main } from './Main';
-const funtionString = `export function App() {
-    console.log(<Header/>)
-    console.log(<Main/>)
-  return (
-    <>
-      <Header />
-      <div id="main">
-      <Main />      
-      </div>
-    </>
-  );
-}`;
+import { appHooks } from '../../hooksInUse';
 
 export function App() {
-  // console.log(funtionString);
-  // console.log(<Header />);
-  // console.log(<Main />);
+  const {
+    submitWasClicked,
+    setSubmitWasClicked,
+    newsStorage,
+    queryProperties,
+    setQueryProperties,
+    setResetWasClicked,
+  } = appHooks();
+  // console.log(submitWasClicked, setSubmitWasClicked, queryProperties, setQueryProperties);
   return (
     <>
-      <Header />
+      <Header
+        submitWasClicked={submitWasClicked}
+        setSubmitWasClicked={setSubmitWasClicked}
+        queryProperties={queryProperties}
+        setQueryProperties={setQueryProperties}
+        setResetWasClicked={setResetWasClicked}
+      />
       <div id="main">
-        <Main />
+        <Main news={newsStorage} />
       </div>
     </>
   );

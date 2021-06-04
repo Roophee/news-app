@@ -1,14 +1,20 @@
-import { getItemFromLocalStore, valuesFromKey, queryProperties } from './dataHandlers';
+import {
+  valuesFromKey,
+  getResponseNoMatch,
+  getResponseErrorNewsArticle,
+  errorString,
+} from './dataHandlers';
 
-const startEndpoint =
+export const startEndpoint =
   'https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk&country=ua&page_size=100&';
-export const createQueryToApi = () => {
+
+export const createQueryToApi = queryProperties => {
   let url = `https://free-news.p.rapidapi.com/v1/search?`;
-  Object.keys(queryProperties)
-    .filter(item => item !== 'from')
-    .map(key => (url += valuesFromKey(key)));
-  if (getItemFromLocalStore('from') !== '') {
-    return (url += `from=${getItemFromLocalStore('from').replaceAll('-', '/')}`);
+  Object.entries(queryProperties)
+    .filter(item => item[0] !== 'from')
+    .map(([key, value]) => (url += valuesFromKey(key, value)));
+  if (queryProperties.from !== '') {
+    return (url += `from=${queryProperties['from'].replaceAll('-', '/')}`);
   }
   return url;
 };
@@ -22,13 +28,16 @@ export const fetchingNews = (url = startEndpoint) => {
     },
   })
     .then(response => {
-      return response.json();
+      const { status, message } = response;
+      if (response.ok) return response.json();
+      if (status > 300) throw Error(errorString);
     })
-    .catch(err => {
-      // console.log('error', err);
+    .catch(error => {
+      // console.log('error', error);
+      return getResponseErrorNewsArticle(error);
     })
     .then(data => {
-      window.news = data.articles;
-      return window.news;
+      const articles = data.articles ?? [];
+      return articles.length > 0 ? articles : getResponseNoMatch();
     });
 };

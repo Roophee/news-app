@@ -7,6 +7,34 @@ export const queryProperties = {
   from: '',
 };
 
+export const errorString =
+  'Status code more then 200. It could be a connection or server error. Try submitting your request again.';
+
+export const getResponseErrorNewsArticle = error => {
+  return {
+    articles: [
+      {
+        title: 'Response received with an Error',
+        published_date: '1970-01-01 00:00:00',
+        summary: error,
+        media:
+          'https://media.istockphoto.com/photos/computer-error-picture-id1222806141?k=6&m=1222806141&s=612x612&w=0&h=7KXHxbzikLbq4MXqxiEPO4wbKkd6ckRVXACDCJUA908=',
+      },
+    ],
+  };
+};
+
+export const getResponseNoMatch = () => {
+  return [
+    {
+      title: 'No matches for your search.',
+      published_date: '1970-01-01 00:00:00',
+      summary: 'No matches',
+      media: 'https://via.placeholder.com/450x250.png/F5F5F5/d32f2f?text=No Matches',
+    },
+  ];
+};
+
 export const checkNullOrContent = arg => {
   return arg === null ? '' : arg;
 };
@@ -31,14 +59,6 @@ export const normalizeNews = news => {
   return news.sort(sortNewsByTimeStamp).filter(filterNewsByRealTimeStamp);
 };
 
-export function getItemFromLocalStore(key) {
-  return window.localStorage.getItem(`${key}`);
-}
-
-export function setItemToLocalStore(key, value) {
-  return window.localStorage.setItem(key, value);
-}
-
 export const getQueryParam = name => {
   if (getItemFromLocalStore(name) !== '*' && getItemFromLocalStore(name) !== '0') {
     return `${getItemFromLocalStore(name)}`;
@@ -47,7 +67,7 @@ export const getQueryParam = name => {
 };
 
 const returnPlaceHolderUrl = () => {
-  return 'https://via.placeholder.com/450x250.png?text=NoImage';
+  return 'https://via.placeholder.com/450x250.png/F5F5F5/d32f2f?text=No Image';
 };
 
 export const getUrlForNewsImage = url => {
@@ -62,12 +82,8 @@ export const defaultSearch = input => {
   return input.trim() === '' ? '*' : input.trim();
 };
 
-export const valuesFromKey = key => {
-  return !(
-    getItemFromLocalStore(`${key}`) == false || getItemFromLocalStore(`${key}`) === 'default'
-  )
-    ? `${key}=${getItemFromLocalStore(`${key}`)}&`
-    : ``;
+export const valuesFromKey = (key, value) => {
+  return !(value == false || value === 'default') ? `${key}=${value}&` : ``;
 };
 
 export default queryProperties;
