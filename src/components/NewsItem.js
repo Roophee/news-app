@@ -7,16 +7,18 @@ import { checkNullOrContent, getUrlForNewsImage } from '../data/dataHandlers.js'
 export function NewsItem({ item }) {
   return (
     <>
-      <div className={styles.flex__start}>
+      <div className={[styles.flex__start, styles.news__item]}>
         <img className={styles.news__picture} src={getUrlForNewsImage(item.media)} />
         <div className={styles.width_100}>
-          <h2>
+          <h4>
             <a href={item.link} target="_blank">
               {item.title}
             </a>
-          </h2>
+          </h4>
           <div>
-            <div className={[styles.flex__space_between, styles.padding_bottom_5px]}>
+            <div
+              className={[styles.flex__space_between, styles.padding_bottom_5px, styles.news__data]}
+            >
               <span>
                 {new Date(checkNullOrContent(item.published_date)).toLocaleDateString()}{' '}
                 {new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}

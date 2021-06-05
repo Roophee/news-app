@@ -5,14 +5,14 @@ import { normalizeNews } from '../data/dataHandlers.js';
 import { NewsItem } from './NewsItem';
 
 export function NewsList(news) {
-  const noMatches = <h3>No matches for your search</h3>;
+  const startPage = <h3>Setup your filters and search a news</h3>;
   return (
     <>
       {news === undefined
-        ? noMatches
+        ? startPage
         : normalizeNews(news).length > 0
         ? normalizeNews(news).map(item => <NewsItem item={item} />)
-        : noMatches}
+        : startPage}
     </>
   );
 }

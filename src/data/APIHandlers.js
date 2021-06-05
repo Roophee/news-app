@@ -37,7 +37,7 @@ export const fetchingNews = (url = startEndpoint) => {
       return getResponseErrorNewsArticle(error);
     })
     .then(data => {
-      const articles = data.articles ?? [];
+      const articles = data.articles || [];
       return articles.length > 0 ? articles : getResponseNoMatch();
     });
 };
