@@ -1,5 +1,7 @@
 # News App
 
+[News App](https://roophee.github.io/news-app/)
+
 The app will collect news from open news sources. The main advantage of this application is the ability to read news from different agencies and from different countries in one place. This will allow you to see how the same events are covered in different countries. For collecting, sorting and filtering news will be used [Newscatcher](https://newscatcherapi.com/), for collecting financial quotes will be used [Yahoo! Finance](https://finance.yahoo.com/)
 
 ## Main Features:
