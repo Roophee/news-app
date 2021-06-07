@@ -6,9 +6,13 @@ export function Footer() {
     <footer className={[styles.footer, styles.flex__center, styles.border_top].join(' ')}>
       <div className={[styles.flex__space_between, styles.width_80].join(' ')}>
         <div className="col-3">
-          <span className="text-muted ">Powered by </span>
-          <a className={styles.link} href="https://newscatcherapi.com/" target="_blank">
-            <span className={styles.warning_color}>&#12296;/newscatcher&#12297;</span>
+          <span className="text-muted ">&#160;&#160;Powered by </span>
+          <a
+            className={[styles.link, styles.warning_color].join(' ')}
+            href="https://newscatcherapi.com/"
+            target="_blank"
+          >
+            &#12296;/newscatcher&#12297;
           </a>
         </div>
         <div className="col-3">

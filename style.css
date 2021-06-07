@@ -65,7 +65,7 @@ form * {
 }
 
 .footer {
-  padding: 15px 0;
+  padding: 10px 0;
 }
 
 .width_100 {
@@ -113,6 +113,10 @@ form * {
   align-self: flex-start;
 }
 
+.align_self_start {
+  align-self: center;
+}
+
 .flex__center {
   display: flex;
   align-items: center;
@@ -148,6 +152,10 @@ form * {
 }
 
 @media screen and (max-width: 900px) {
+  .main {
+    width: 90%;
+  }
+
   .news__item {
     flex-direction: column;
     justify-content: center;
@@ -155,7 +163,7 @@ form * {
   }
   .news__picture {
     width: 100%;
-    margin-bottom: 20px;
+    margin: 0 20px 0 10px;
   }
   .news__data {
     flex-direction: column;

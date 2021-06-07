@@ -102,7 +102,7 @@ export function Header(props) {
           </div>
         </div>
         <div className={[styles.flex__center, styles.width_80].join(' ')}>
-          <form className={[styles.flex__center, styles.flex__wrap].join(' ')}>
+          <form className={styles.flex__start}>
             <div className={[styles.flex__start, styles.flex__column].join(' ')}>
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Keyword
@@ -180,7 +180,7 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div className={styles.flex__center}>
+            <div className={[styles.flex__center, styles.align_self_start].join(' ')}>
               <input
                 className={styles.form__buttons}
                 style={{ backgroundColor: '#C8E6C9' }}
