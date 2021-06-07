@@ -3,7 +3,7 @@ import { normalizeNews } from '../data/dataHandlers.js';
 import { NewsItem } from './NewsItem';
 
 export function NewsList(news) {
-  const startPage = <h3>Setup your filters and search a news</h3>;
+  const startPage = <h3>Select filters and search for news</h3>;
   return (
     <>
       {news === undefined
