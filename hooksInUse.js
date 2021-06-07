@@ -27,18 +27,16 @@ export const appHooks = () => {
 
   useEffect(() => {
     if (resetWasClicked) {
-      fetchingNews().then(news => {
-        setNewsInStorage([...news]);
-        setQueryProperties({
-          q: '*',
-          topic: 'default',
-          lang: 'default',
-          country: 'default',
-          page_size: 75,
-          from: '',
-        });
-        setResetWasClicked(false);
+      setNewsInStorage([]);
+      setQueryProperties({
+        q: '*',
+        topic: 'default',
+        lang: 'default',
+        country: 'default',
+        page_size: 75,
+        from: '',
       });
+      setResetWasClicked(false);
     }
   }, [resetWasClicked]);
 
