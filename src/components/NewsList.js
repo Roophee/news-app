@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import { normalizeNews } from '../data/dataHandlers.js';
 import { NewsItem } from './NewsItem';
 
@@ -11,7 +9,7 @@ export function NewsList(news) {
       {news === undefined
         ? startPage
         : normalizeNews(news).length > 0
-        ? normalizeNews(news).map(item => <NewsItem item={item} />)
+        ? normalizeNews(news).map((item, idx) => <NewsItem item={item} key={idx} />)
         : startPage}
     </>
   );

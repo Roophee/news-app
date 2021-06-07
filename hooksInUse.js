@@ -1,6 +1,5 @@
-import { useState, useEffect } from './src/framework/hooks';
-import { createQueryToApi, fetchingNews, startEndpoint } from './src/data/APIHandlers';
-import { render } from './src/framework/render';
+import { useState, useEffect } from 'react';
+import { createQueryToApi, fetchingNews } from './src/data/APIHandlers';
 
 export const appHooks = () => {
   const [submitWasClicked, setSubmitWasClicked] = useState(false);
@@ -16,10 +15,6 @@ export const appHooks = () => {
   });
 
   window.state = queryProperties;
-
-  // useEffect(() => {
-  //     fetchingNews();
-  //   });
 
   useEffect(() => {
     if (submitWasClicked) {

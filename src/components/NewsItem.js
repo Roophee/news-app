@@ -1,13 +1,11 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import styles from '../../style.css';
 import { checkNullOrContent, getUrlForNewsImage } from '../data/dataHandlers.js';
 
 export function NewsItem({ item }) {
   return (
     <>
-      <div className={[styles.flex__start, styles.news__item]}>
+      <div className={[styles.flex__start, styles.news__item].join(' ')}>
         <img className={styles.news__picture} src={getUrlForNewsImage(item.media)} />
         <div className={styles.width_100}>
           <h4>
@@ -17,7 +15,11 @@ export function NewsItem({ item }) {
           </h4>
           <div>
             <div
-              className={[styles.flex__space_between, styles.padding_bottom_5px, styles.news__data]}
+              className={[
+                styles.flex__space_between,
+                styles.padding_bottom_5px,
+                styles.news__data,
+              ].join(' ')}
             >
               <span>
                 {new Date(checkNullOrContent(item.published_date)).toLocaleDateString()}{' '}

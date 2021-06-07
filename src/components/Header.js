@@ -1,19 +1,6 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
-import { fetchingNews, createQueryToApi } from '../data/APIHandlers';
-import { render } from '../framework/render';
-import { appHooks } from '../../hooksInUse';
-import {
-  setItemToLocalStore,
-  defaultSearch,
-  getQueryParam,
-  queryProperties,
-} from '../data/dataHandlers.js';
+import React from 'react';
+import { defaultSearch } from '../data/dataHandlers.js';
 import styles from '../../style.css';
-import Account from './Account';
-import { Main } from './Main';
-import { App } from './App';
 import { Option } from './Option';
 
 export function Header(props) {
@@ -68,13 +55,13 @@ export function Header(props) {
   };
 
   const createOptionGroup = (stateValue, options) => {
-    return Object.entries(options).map(([value, text]) => {
+    return Object.entries(options).map(([value, text], index) => {
       const optionProperties = {
         stateValue,
         value,
         text,
       };
-      return <Option {...optionProperties} />;
+      return <Option key={index} {...optionProperties} />;
     });
   };
 
@@ -92,21 +79,15 @@ export function Header(props) {
 
   return (
     <>
-      <div className={styles.header}>
-        {/*<div className={[styles.flex__center, styles.width_100, styles.border_bottom]}>*/}
-        {/*  <div className={[styles.flex__space_between, styles.width_80]}>*/}
-        {/*    <img*/}
-        {/*      style="height: 50px;"*/}
-        {/*      src="https://archive.org/download/news-logo/news-logo.png"*/}
-        {/*      alt="logo"*/}
-        {/*    />*/}
-        {/*    <Account />*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+      <header className={styles.header}>
         <nav className="navbar navbar-dark bg-dark">
           <div className="container-fluid">
             <a className="navbar-brand">News App</a>
-            <button className="btn btn-outline-success" style="margin-right: 20px" type="button">
+            <button
+              className="btn btn-outline-success"
+              style={{ marginRight: '20px' }}
+              type="button"
+            >
               Login
             </button>
           </div>
@@ -115,7 +96,7 @@ export function Header(props) {
           <form>
             <div>
               <label>
-                Keyword{' '}
+                Keyword
                 <input
                   className="input-group input-group-sm mb-3"
                   type="text"
@@ -130,7 +111,7 @@ export function Header(props) {
             </div>
             <div>
               <label>
-                Category{' '}
+                Category
                 <select
                   className="form-select form-select-sm"
                   name="topic"
@@ -143,21 +124,20 @@ export function Header(props) {
             </div>
             <div>
               <label>
-                Language{' '}
+                Language
                 <select
                   className="form-select form-select-sm"
                   name="lang"
                   id="lang"
                   onChange={event => queryPropertySetter(event.target.id, event.target.value)}
                 >
-                  {' '}
                   {createOptionGroup(queryProperties.lang, languageOptions)}
                 </select>
               </label>
             </div>
             <div>
               <label>
-                Country{' '}
+                Country
                 <select
                   className="form-select form-select-sm"
                   name="country"
@@ -170,7 +150,7 @@ export function Header(props) {
             </div>
             <div>
               <label>
-                From date{' '}
+                From date
                 <input
                   className="input-group input-group-sm mb-3"
                   type="date"
@@ -181,12 +161,20 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div className={[styles.flex__start, styles.flex__column, styles.align_self_start]}>
-              <label className={[styles.flex__start, styles.flex__column, styles.align_self_start]}>
-                Page size{' '}
+            <div
+              className={[styles.flex__start, styles.flex__column, styles.align_self_start].join(
+                ' ',
+              )}
+            >
+              <label
+                className={[styles.flex__start, styles.flex__column, styles.align_self_start].join(
+                  ' ',
+                )}
+              >
+                Page size &#160;
                 <input
-                  class="form-range"
-                  style="width: 80px"
+                  className="form-range"
+                  style={{ width: 80 + 'px' }}
                   type="range"
                   min="25"
                   max="100"
@@ -220,7 +208,7 @@ export function Header(props) {
             </div>
           </form>
         </div>
-      </div>
+      </header>
     </>
   );
 }

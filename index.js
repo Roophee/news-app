@@ -1,8 +1,8 @@
 if (module.hot) {
   module.hot.accept();
 }
-import { render } from './src/framework/render';
+import React from 'react';
+import { render } from 'react-dom';
 import { App } from './src/components/App';
-import { fetchingNews } from './src/data/APIHandlers';
 
-fetchingNews().then(news => render(App, document.getElementById('app-root')));
+render(<App />, document.getElementById('app-root'));

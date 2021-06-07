@@ -1,8 +1,7 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import { Header } from './Header';
 import { Main } from './Main';
+import { Footer } from './Footer';
 import { appHooks } from '../../hooksInUse';
 
 export function App() {
@@ -24,9 +23,8 @@ export function App() {
         setQueryProperties={setQueryProperties}
         setResetWasClicked={setResetWasClicked}
       />
-      <div id="main">
-        <Main news={newsStorage} />
-      </div>
+      <Main news={newsStorage} />
+      <Footer />
     </>
   );
 }
