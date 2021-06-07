@@ -81,23 +81,32 @@ export function Header(props) {
   return (
     <>
       <header className={styles.header}>
-        <div className={[styles.flex__center, styles.width_100, styles.border_bottom].join(' ')}>
+        <div
+          className={[
+            styles.flex__center,
+            styles.width_100,
+            styles.border_bottom,
+            styles.header__height,
+          ].join(' ')}
+        >
           <div className={[styles.flex__space_between, styles.width_80].join(' ')}>
-            <img
-              style={{ height: 50 + 'px' }}
-              src="https://archive.org/download/news-logo/news-logo.png"
-              alt="logo"
-            />
+            {/*<img*/}
+            {/*  style={{ height: 50 + 'px' }}*/}
+            {/*  src="https://archive.org/download/news-logo/news-logo.png"*/}
+            {/*  alt="logo"*/}
+            {/*/>*/}
+            <span>
+              <b>News App</b>
+            </span>
             <Account />
           </div>
         </div>
-        <div className={styles.flex__center}>
-          <form className={styles.flex__center}>
+        <div className={[styles.flex__center, styles.width_80].join(' ')}>
+          <form className={[styles.flex__center, styles.flex__wrap].join(' ')}>
             <div className={[styles.flex__start, styles.flex__column].join(' ')}>
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Keyword
                 <input
-                  className="input-group input-group-sm mb-3"
                   type="text"
                   name="search"
                   value={keywordGetter()}
@@ -112,7 +121,6 @@ export function Header(props) {
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Category
                 <select
-                  className="form-select form-select-sm"
                   name="topic"
                   id="topic"
                   onChange={event => queryPropertySetter(event.target.id, event.target.value)}
@@ -125,7 +133,6 @@ export function Header(props) {
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Language
                 <select
-                  className="form-select form-select-sm"
                   name="lang"
                   id="lang"
                   onChange={event => queryPropertySetter(event.target.id, event.target.value)}
@@ -138,7 +145,6 @@ export function Header(props) {
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Country
                 <select
-                  className="form-select form-select-sm"
                   name="country"
                   id="country"
                   onChange={event => queryPropertySetter(event.target.id, event.target.value)}
@@ -151,7 +157,6 @@ export function Header(props) {
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 From date
                 <input
-                  className="input-group input-group-sm mb-3"
                   type="date"
                   name="from"
                   id="from"
@@ -162,9 +167,8 @@ export function Header(props) {
             </div>
             <div className={[styles.flex__start, styles.flex__column].join(' ')}>
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
-                Page size &#160;
+                News quantity &#160;
                 <input
-                  className="form-range"
                   style={{ width: 80 + 'px' }}
                   type="range"
                   min="25"
@@ -176,28 +180,28 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
-              <div>
-                <input
-                  style={{ backgroundColor: '#C8E6C9' }}
-                  type="submit"
-                  value="Search"
-                  onClick={event => {
-                    event.preventDefault();
-                    setSubmitWasClicked(true);
-                  }}
-                />
-                <button
-                  style={{ backgroundColor: '#ffcdd2' }}
-                  type="button"
-                  onClick={event => {
-                    event.preventDefault();
-                    setResetWasClicked(true);
-                  }}
-                >
-                  Reset
-                </button>
-              </div>
+            <div className={styles.flex__center}>
+              <input
+                className={styles.form__buttons}
+                style={{ backgroundColor: '#C8E6C9' }}
+                type="submit"
+                value="Search"
+                onClick={event => {
+                  event.preventDefault();
+                  setSubmitWasClicked(true);
+                }}
+              />
+              <button
+                className={styles.form__buttons}
+                style={{ backgroundColor: '#ffcdd2' }}
+                type="button"
+                onClick={event => {
+                  event.preventDefault();
+                  setResetWasClicked(true);
+                }}
+              >
+                Reset
+              </button>
             </div>
           </form>
         </div>

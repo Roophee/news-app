@@ -12,7 +12,9 @@ export default function Account() {
             alt="user"
           />
         </div>
-        <button>Log In</button>
+        <button>
+          <b>Login</b>
+        </button>
       </div>
     </>
   );

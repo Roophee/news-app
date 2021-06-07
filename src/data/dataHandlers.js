@@ -86,4 +86,20 @@ export const valuesFromKey = (key, value) => {
   return !(value == false || value === 'default') ? `${key}=${value}&` : ``;
 };
 
+const getControlledDate = x => {
+  let n = new Date();
+  n.setDate(n.getDate() + x);
+  return n.toLocaleDateString();
+};
+
+export const getDateLabel = date => {
+  let itemDate = new Date(date).toLocaleDateString();
+  if (itemDate === getControlledDate(0)) {
+    return 'Tooday';
+  } else if (itemDate === getControlledDate(-1)) {
+    return 'Yesterday';
+  }
+  return itemDate;
+};
+
 export default queryProperties;
