@@ -1,6 +1,7 @@
 import React from 'react';
 import { defaultSearch } from '../data/dataHandlers.js';
 import styles from '../../style.css';
+import Account from './Account';
 import { Option } from './Option';
 
 export function Header(props) {
@@ -80,22 +81,20 @@ export function Header(props) {
   return (
     <>
       <header className={styles.header}>
-        <nav className="navbar navbar-dark bg-dark">
-          <div className="container-fluid">
-            <a className="navbar-brand">News App</a>
-            <button
-              className="btn btn-outline-success"
-              style={{ marginRight: '20px' }}
-              type="button"
-            >
-              Login
-            </button>
+        <div className={[styles.flex__center, styles.width_100, styles.border_bottom].join(' ')}>
+          <div className={[styles.flex__space_between, styles.width_80].join(' ')}>
+            <img
+              style={{ height: 50 + 'px' }}
+              src="https://archive.org/download/news-logo/news-logo.png"
+              alt="logo"
+            />
+            <Account />
           </div>
-        </nav>
+        </div>
         <div className={styles.flex__center}>
-          <form>
-            <div>
-              <label>
+          <form className={styles.flex__center}>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Keyword
                 <input
                   className="input-group input-group-sm mb-3"
@@ -109,8 +108,8 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div>
-              <label>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Category
                 <select
                   className="form-select form-select-sm"
@@ -122,8 +121,8 @@ export function Header(props) {
                 </select>
               </label>
             </div>
-            <div>
-              <label>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Language
                 <select
                   className="form-select form-select-sm"
@@ -135,8 +134,8 @@ export function Header(props) {
                 </select>
               </label>
             </div>
-            <div>
-              <label>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Country
                 <select
                   className="form-select form-select-sm"
@@ -148,8 +147,8 @@ export function Header(props) {
                 </select>
               </label>
             </div>
-            <div>
-              <label>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 From date
                 <input
                   className="input-group input-group-sm mb-3"
@@ -161,16 +160,8 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div
-              className={[styles.flex__start, styles.flex__column, styles.align_self_start].join(
-                ' ',
-              )}
-            >
-              <label
-                className={[styles.flex__start, styles.flex__column, styles.align_self_start].join(
-                  ' ',
-                )}
-              >
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 Page size &#160;
                 <input
                   className="form-range"
@@ -185,26 +176,28 @@ export function Header(props) {
                 />
               </label>
             </div>
-            <div>
-              <input
-                className="btn btn-success"
-                type="submit"
-                value="Search"
-                onClick={event => {
-                  event.preventDefault();
-                  setSubmitWasClicked(true);
-                }}
-              />
-              <button
-                className="btn btn-danger"
-                type="button"
-                onClick={event => {
-                  event.preventDefault();
-                  setResetWasClicked(true);
-                }}
-              >
-                Reset
-              </button>
+            <div className={[styles.flex__start, styles.flex__column].join(' ')}>
+              <div>
+                <input
+                  style={{ backgroundColor: '#C8E6C9' }}
+                  type="submit"
+                  value="Search"
+                  onClick={event => {
+                    event.preventDefault();
+                    setSubmitWasClicked(true);
+                  }}
+                />
+                <button
+                  style={{ backgroundColor: '#ffcdd2' }}
+                  type="button"
+                  onClick={event => {
+                    event.preventDefault();
+                    setResetWasClicked(true);
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </form>
         </div>
