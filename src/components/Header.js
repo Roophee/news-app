@@ -95,9 +95,12 @@ export function Header(props) {
             {/*  src="https://archive.org/download/news-logo/news-logo.png"*/}
             {/*  alt="logo"*/}
             {/*/>*/}
-            <span>
-              <b>News App</b>
-            </span>
+            <a
+              className={[styles.link, styles.warning_color].join(' ')}
+              href="https://roophee.github.io/news-app/"
+            >
+              News App
+            </a>
             <Account />
           </div>
         </div>
