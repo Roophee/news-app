@@ -172,7 +172,7 @@ export function Header(props) {
               <label className={[styles.flex__start, styles.flex__column].join(' ')}>
                 News quantity &#160;
                 <input
-                  style={{ width: 80 + 'px' }}
+                  style={{ minWidth: 80 + 'px', width: 10 + 'vw' }}
                   type="range"
                   min="25"
                   max="100"
@@ -184,16 +184,17 @@ export function Header(props) {
               </label>
             </div>
             <div className={[styles.flex__center, styles.align_self_start].join(' ')}>
-              <input
+              <button
                 className={styles.form__buttons}
                 style={{ backgroundColor: '#C8E6C9' }}
                 type="submit"
-                value="Search"
                 onClick={event => {
                   event.preventDefault();
                   setSubmitWasClicked(true);
                 }}
-              />
+              >
+                Search
+              </button>
               <button
                 className={styles.form__buttons}
                 style={{ backgroundColor: '#ffcdd2' }}

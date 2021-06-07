@@ -66,16 +66,22 @@ export const getQueryParam = name => {
   return '';
 };
 
-const returnPlaceHolderUrl = () => {
-  return 'https://via.placeholder.com/450x250.png/F5F5F5/d32f2f?text=No Image';
+const returnPlaceHolderUrl = (msg = 'No Image') => {
+  return `https://via.placeholder.com/450x250.png/F5F5F5/d32f2f?text=${msg}`;
 };
 
-export const getUrlForNewsImage = url => {
-  return checkNullOrContent(url).includes('https')
-    ? checkNullOrContent(url)
-    : checkNullOrContent(url).includes('http')
-    ? checkNullOrContent(url).replace('http', 'https')
-    : returnPlaceHolderUrl();
+export const getUrlForNewsImage = (url, placeHolderText) => {
+  if (checkNullOrContent(url)) {
+    let x = url.split('/');
+    const protocol = x[0];
+    if (protocol.length === 4) return returnPlaceHolderUrl(checkNullOrContent(placeHolderText));
+    x = x[x.length - 1].split('.');
+    const fileName = x[0];
+    if (fileName.toLowerCase() === 'favicon')
+      return returnPlaceHolderUrl(checkNullOrContent(placeHolderText));
+    return url;
+  }
+  return returnPlaceHolderUrl(checkNullOrContent(placeHolderText));
 };
 
 export const defaultSearch = input => {

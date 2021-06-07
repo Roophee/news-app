@@ -6,7 +6,10 @@ export function NewsItem({ item }) {
   return (
     <>
       <div className={[styles.flex__start, styles.news__item, styles.margin__bottom].join(' ')}>
-        <img className={styles.news__picture} src={getUrlForNewsImage(item.media)} />
+        <img
+          className={styles.news__picture}
+          src={getUrlForNewsImage(item.media, item.clean_url)}
+        />
         <div className={styles.width_100}>
           <h3>
             <a href={item.link} target="_blank">
@@ -27,7 +30,10 @@ export function NewsItem({ item }) {
                 {new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
               </span>
               <strong>
-                {checkNullOrContent(item.author)} ({checkNullOrContent(item.clean_url)})
+                {checkNullOrContent(item.author)}
+                {!checkNullOrContent(item.author)
+                  ? checkNullOrContent(item.clean_url)
+                  : ` ( ${checkNullOrContent(item.clean_url)} )`}
               </strong>
             </div>
             <div>

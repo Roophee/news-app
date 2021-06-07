@@ -177,6 +177,12 @@ form * {
     font-size: 1.15rem;
   }
 
+  form input,
+  select,
+  button {
+    font-size: 0.85rem;
+  }
+
   .news__item {
     border-width: 2px;
   }
@@ -189,6 +195,12 @@ form * {
 
 @media screen and (min-width: 1700px) {
   body {
+    font-size: 1.5rem;
+  }
+
+  form input,
+  select,
+  button {
     font-size: 1.5rem;
   }
 
@@ -209,6 +221,12 @@ form * {
 @media screen and (min-width: 2500px) {
   body {
     font-size: 2.5rem;
+  }
+
+  form input,
+  select,
+  button {
+    font-size: 2rem;
   }
 
   .header__height {
