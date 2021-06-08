@@ -2,9 +2,8 @@ import React from 'react';
 import styles from '../../style.css';
 import Account from './Account';
 import Logo from './Logo';
-import SearchForm from './SearchForm';
 
-export function Header(props) {
+export function Header() {
   return (
     <>
       <header className={styles.header}>
@@ -21,7 +20,6 @@ export function Header(props) {
             <Account />
           </div>
         </div>
-        <SearchForm {...props} />
       </header>
     </>
   );

@@ -1,6 +1,12 @@
 import React from 'react';
 import styles from '../../style.css';
-import { checkNullOrContent, getDateLabel, getUrlForNewsImage } from '../data/dataHandlers.js';
+import {
+  authorHandler,
+  checkNullOrContent,
+  getDateLabel,
+  getUrlForNewsImage,
+  newsSourceHandler,
+} from '../data/dataHandlers.js';
 
 export function NewsItem({ item }) {
   return (
@@ -9,6 +15,7 @@ export function NewsItem({ item }) {
         <img
           className={styles.news__picture}
           src={getUrlForNewsImage(item.media, item.clean_url)}
+          alt="News_photo"
         />
         <div className={styles.width_100}>
           <h3>
@@ -30,10 +37,8 @@ export function NewsItem({ item }) {
                 {new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
               </span>
               <strong>
-                {checkNullOrContent(item.author)}
-                {!checkNullOrContent(item.author)
-                  ? checkNullOrContent(item.clean_url)
-                  : ` ( ${checkNullOrContent(item.clean_url)} )`}
+                {authorHandler(item.author)}
+                {newsSourceHandler(item.author, item.clean_url)}
               </strong>
             </div>
             <div>

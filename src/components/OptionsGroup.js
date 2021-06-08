@@ -46,10 +46,9 @@ export default function OptionsGroup(props) {
       ch: 'China',
     },
   };
-  const { stateValue, optionsType } = props;
+  const { optionsType } = props;
   return Object.entries(optionsGroups[optionsType]).map(([value, text], index) => {
     const optionProperties = {
-      stateValue,
       value,
       text,
     };

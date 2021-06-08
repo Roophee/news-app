@@ -1,8 +1,7 @@
 import React from 'react';
 import { defaultSearch } from '../data/dataHandlers.js';
-import styles from '../../style.css';
 import OptionsGroup from './OptionsGroup';
-import { Option } from './Option';
+import styles from '../../style.css';
 
 export default function SearchForm(props) {
   const {
@@ -12,59 +11,6 @@ export default function SearchForm(props) {
     setQueryProperties,
     setResetWasClicked,
   } = props;
-  const topicOptions = {
-    default: 'Any',
-    business: 'Business',
-    beauty: 'Beauty',
-    entertainment: 'Entertainment',
-    economics: 'Economics',
-    finance: 'Finance',
-    food: 'Food',
-    news: 'General',
-    music: 'Music',
-    politics: 'Politics',
-    science: 'Science',
-    sport: 'Sport',
-    tech: 'Technology',
-    travel: 'Travel',
-    world: 'World',
-  };
-  const languageOptions = {
-    default: 'Any',
-    uk: 'Ukrainian',
-    de: 'German',
-    en: 'English',
-    ru: 'Russian',
-    it: 'Italian',
-    lt: 'Lithuanian',
-    pt: 'Portuguese',
-    es: 'Spanish',
-    cn: 'Chinese',
-  };
-  const countryOptions = {
-    default: 'Any',
-    ua: 'Ukraine',
-    us: 'USA',
-    ru: 'Russia',
-    de: 'Germany',
-    gb: 'Great Britain',
-    it: 'Italy',
-    lt: 'Lithuania',
-    pt: 'Portugal',
-    sp: 'Spain',
-    ch: 'China',
-  };
-
-  const createOptionGroup = (stateValue, options) => {
-    return Object.entries(options).map(([value, text], index) => {
-      const optionProperties = {
-        stateValue,
-        value,
-        text,
-      };
-      return <Option key={index} {...optionProperties} />;
-    });
-  };
 
   const keywordGetter = () => {
     if (queryProperties.q === '*') return '';
@@ -102,9 +48,10 @@ export default function SearchForm(props) {
               <select
                 name="topic"
                 id="topic"
+                value={queryProperties.topic}
                 onChange={event => queryPropertySetter(event.target.id, event.target.value)}
               >
-                <OptionsGroup stateValue={queryProperties.topic} optionsType={'topicOptions'} />
+                <OptionsGroup optionsType={'topicOptions'} />
               </select>
             </label>
           </div>
@@ -114,9 +61,10 @@ export default function SearchForm(props) {
               <select
                 name="lang"
                 id="lang"
+                value={queryProperties.lang}
                 onChange={event => queryPropertySetter(event.target.id, event.target.value)}
               >
-                <OptionsGroup stateValue={queryProperties.lang} optionsType={'languageOptions'} />
+                <OptionsGroup optionsType={'languageOptions'} />
               </select>
             </label>
           </div>
@@ -126,9 +74,10 @@ export default function SearchForm(props) {
               <select
                 name="country"
                 id="country"
+                value={queryProperties.country}
                 onChange={event => queryPropertySetter(event.target.id, event.target.value)}
               >
-                <OptionsGroup stateValue={queryProperties.country} optionsType={'countryOptions'} />
+                <OptionsGroup optionsType={'countryOptions'} />
               </select>
             </label>
           </div>

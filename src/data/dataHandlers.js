@@ -108,4 +108,17 @@ export const getDateLabel = date => {
   return itemDate;
 };
 
+export const authorHandler = author => {
+  return !checkNullOrContent(author) ||
+    author.toLocaleLowerCase() === 'http' ||
+    author.toLocaleLowerCase() === 'https'
+    ? ''
+    : author;
+};
+
+export const newsSourceHandler = (author, source) => {
+  if (authorHandler(author)) return checkNullOrContent(source) ? ` ( ${source} )` : '';
+  return checkNullOrContent(source) ? source : '';
+};
+
 export default queryProperties;
