@@ -9,7 +9,7 @@ export function NewsList(news) {
       {news === undefined
         ? startPage
         : normalizeNews(news).length > 0
-        ? normalizeNews(news).map((item, idx) => <NewsItem item={item} key={idx} />)
+        ? normalizeNews(news).map(item => <NewsItem item={item} key={item._id} />)
         : startPage}
     </>
   );
