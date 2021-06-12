@@ -1,9 +1,9 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import { Header } from './Header';
 import { Main } from './Main';
+import { Footer } from './Footer';
 import { appHooks } from '../../hooksInUse';
+import SearchForm from './SearchForm';
 
 export function App() {
   const {
@@ -14,19 +14,19 @@ export function App() {
     setQueryProperties,
     setResetWasClicked,
   } = appHooks();
-  // console.log(submitWasClicked, setSubmitWasClicked, queryProperties, setQueryProperties);
+
   return (
     <>
-      <Header
+      <Header />
+      <SearchForm
         submitWasClicked={submitWasClicked}
         setSubmitWasClicked={setSubmitWasClicked}
         queryProperties={queryProperties}
         setQueryProperties={setQueryProperties}
         setResetWasClicked={setResetWasClicked}
       />
-      <div id="main">
-        <Main news={newsStorage} />
-      </div>
+      <Main news={newsStorage} />
+      <Footer />
     </>
   );
 }

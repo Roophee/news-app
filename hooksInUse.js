@@ -1,25 +1,22 @@
-import { useState, useEffect } from './src/framework/hooks';
-import { createQueryToApi, fetchingNews, startEndpoint } from './src/data/APIHandlers';
-import { render } from './src/framework/render';
+import { useState, useEffect } from 'react';
+import { createQueryToApi, fetchingNews } from './src/data/APIHandlers';
+
+const initialQueryPropertyState = {
+  q: '*',
+  topic: 'default',
+  lang: 'default',
+  country: 'default',
+  page_size: 75,
+  from: '',
+};
 
 export const appHooks = () => {
   const [submitWasClicked, setSubmitWasClicked] = useState(false);
   const [newsStorage, setNewsInStorage] = useState([]);
   const [resetWasClicked, setResetWasClicked] = useState(false);
-  const [queryProperties, setQueryProperties] = useState({
-    q: '*',
-    topic: 'default',
-    lang: 'default',
-    country: 'default',
-    page_size: 75,
-    from: '',
-  });
+  const [queryProperties, setQueryProperties] = useState(initialQueryPropertyState);
 
   window.state = queryProperties;
-
-  // useEffect(() => {
-  //     fetchingNews();
-  //   });
 
   useEffect(() => {
     if (submitWasClicked) {
@@ -32,18 +29,9 @@ export const appHooks = () => {
 
   useEffect(() => {
     if (resetWasClicked) {
-      fetchingNews().then(news => {
-        setNewsInStorage([...news]);
-        setQueryProperties({
-          q: '*',
-          topic: 'default',
-          lang: 'default',
-          country: 'default',
-          page_size: 75,
-          from: '',
-        });
-        setResetWasClicked(false);
-      });
+      setNewsInStorage([]);
+      setQueryProperties(initialQueryPropertyState);
+      setResetWasClicked(false);
     }
   }, [resetWasClicked]);
 

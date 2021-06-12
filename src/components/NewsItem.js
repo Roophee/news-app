@@ -1,30 +1,44 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import styles from '../../style.css';
-import { checkNullOrContent, getUrlForNewsImage } from '../data/dataHandlers.js';
+import {
+  authorHandler,
+  checkNullOrContent,
+  getDateLabel,
+  getUrlForNewsImage,
+  newsSourceHandler,
+} from '../data/dataHandlers.js';
 
 export function NewsItem({ item }) {
   return (
     <>
-      <div className={[styles.flex__start, styles.news__item]}>
-        <img className={styles.news__picture} src={getUrlForNewsImage(item.media)} />
+      <div className={[styles.flex__start, styles.news__item, styles.margin__bottom].join(' ')}>
+        <img
+          className={styles.news__picture}
+          src={getUrlForNewsImage(item.media, item.clean_url)}
+          alt="News_photo"
+        />
         <div className={styles.width_100}>
-          <h4>
+          <h3>
             <a href={item.link} target="_blank">
               {item.title}
             </a>
-          </h4>
+          </h3>
           <div>
             <div
-              className={[styles.flex__space_between, styles.padding_bottom_5px, styles.news__data]}
+              className={[
+                styles.flex__space_between,
+                styles.padding_bottom_5px,
+                styles.news__data,
+                styles.margin__bottom,
+              ].join(' ')}
             >
               <span>
-                {new Date(checkNullOrContent(item.published_date)).toLocaleDateString()}{' '}
+                {getDateLabel(checkNullOrContent(item.published_date))}{' '}
                 {new Date(checkNullOrContent(item.published_date)).toLocaleTimeString()}
               </span>
               <strong>
-                {checkNullOrContent(item.author)} ({checkNullOrContent(item.clean_url)})
+                {authorHandler(item.author)}
+                {newsSourceHandler(item.author, item.clean_url)}
               </strong>
             </div>
             <div>

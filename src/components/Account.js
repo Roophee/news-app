@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import React from 'react';
 import styles from '../../style.css';
 
 export default function Account() {
@@ -14,7 +12,7 @@ export default function Account() {
             alt="user"
           />
         </div>
-        <button>Log In</button>
+        <button type="submit">Login</button>
       </div>
     </>
   );
